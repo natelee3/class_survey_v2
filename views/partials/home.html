@@ -1,7 +1,20 @@
 <main>
     <h1>${title}</h1>
-    ${data.map(topic => `
-        <p>I am ${topic.ranking_title} at ${topic.topic_name}</p>`).join('')}
-
+    <form action="/update" method="POST">
+        <fieldset>
+        ${data.map(topic => `
+            
+        <label>
+            I am
+            <select name="${topic.topic_name}">
+                ${rankings.map(rank => `
+                    <option value="${rank.id}" ${topic.topic_score === rank.id ? 'selected' : ''}>${rank.ranking_title}</option>`).join('')}
+            </select>
+            at ${topic.topic_name}!<br>
+        </label>` 
+        ).join('')}
+        <button type="submit">Update Ranking</button>
+    </fieldset>
+    </form>
 </main>
 
