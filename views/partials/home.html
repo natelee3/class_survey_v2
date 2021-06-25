@@ -1,7 +1,6 @@
 <main>
     <h1>${title}</h1>
     <form action="/update" method="POST">
-        <fieldset>
         ${data.map(topic => `
             
         <label>
@@ -14,7 +13,6 @@
         </label>` 
         ).join('')}
         <button type="submit">Update Ranking</button>
-    </fieldset>
     </form>
 </main>
 
