@@ -39,18 +39,30 @@ router.get('/error', async (req, res) => {
 });
 
 router.post('/update', async (req, res) => {
-    let response
+    let responses = [];
 
     for (let key in req.body) {
         response = await ClassSurveyModel.updateRanking(key, req.body[key])
+        let status = {};
+        status['topic'] = key;
+        status['rowCount'] = response.rowCount;
+        responses.push(status);
     }
 
-    if (response.rowCount !== 1) {
-        res.redirect(`/error?error=${response}`)
-    } else {
-        res.redirect('/');
+    const invalidEntry = response.filter(response => {
+        response.rowCount === 0;
+    })
 
+    if (!invalidEntry.length) {
+        res.redirect('/');
+    } else {
+        let errorMessage = '';
+        invalidEntry.forEach(entry => {
+            errorMessage += `, ${entry.topic}`
+        })
+        res.redirect(`/error?error="Unable to update the following topic(s)${errorMessage}`)
     }
 });
+
 
 module.exports = router;
